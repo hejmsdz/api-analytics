@@ -1,4 +1,4 @@
-module github.com/tom-draper/api-analytics/analytics/go/gin
+module github.com/hejmsdz/api-analytics/analytics/go/gin
 
 go 1.23.0
 
