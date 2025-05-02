@@ -20,12 +20,12 @@ type Config struct {
 func NewConfig() *Config {
 	return &Config{
 		PrivacyLevel: 0,
-		ServerURL: core.DefaultServerURL,
-		GetPath: GetPath,
-		GetHostname: GetHostname,
+		ServerURL:    core.DefaultServerURL,
+		GetPath:      GetPath,
+		GetHostname:  GetHostname,
 		GetUserAgent: GetUserAgent,
 		GetIPAddress: GetIPAddress,
-		GetUserID: GetUserID,
+		GetUserID:    GetUserID,
 	}
 }
 
@@ -34,6 +34,8 @@ func Analytics(apiKey string) gin.HandlerFunc {
 }
 
 func AnalyticsWithConfig(apiKey string, config *Config) gin.HandlerFunc {
+	client := core.NewClient(apiKey, "Gin", config.PrivacyLevel, config.ServerURL)
+
 	return func(c *gin.Context) {
 		start := time.Now()
 		c.Next()
@@ -50,7 +52,7 @@ func AnalyticsWithConfig(apiKey string, config *Config) gin.HandlerFunc {
 			CreatedAt:    start.Format(time.RFC3339),
 		}
 
-		core.LogRequest(apiKey, data, "Gin", config.PrivacyLevel, config.ServerURL)
+		client.LogRequest(data)
 	}
 }
 
